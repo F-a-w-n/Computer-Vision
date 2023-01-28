@@ -68,7 +68,7 @@ while True:
 
         if debug_mode:
             print("[INFO] detecting AprilTags...")
-        results = detector.detect(image, estimate_tag_pose=True, camera_params=aprilCameraMatrix, tag_size=0.2032)
+        results = detector.detect(image, estimate_tag_pose=True, camera_params=aprilCameraMatrix, tag_size=0.35884934178)
 
         # print(results)
         if debug_mode:
@@ -140,7 +140,7 @@ while True:
                 nt.putNumber("y", poseTranslation[1][0])
                 nt.putNumber("z", poseTranslation[2][0])
 
-                tagID = int(r.tag_id[-1])
+                tagID = r.tag_id
                 nt.putNumber("tag", tagID)
 
                 if debug_mode:
