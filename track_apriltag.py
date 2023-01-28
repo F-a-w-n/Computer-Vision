@@ -75,8 +75,15 @@ while True:
             print(f"[INFO] {len(results)} total AprilTags detected")
             print(f"[INFO] Looping over {len(results)} apriltags and getting data")
 
+        nt.putNumber("rotZ", -1)
+        nt.putNumber("rotX", -1)
+        nt.putNumber("rotY", -1)
+
         nt.putNumber("x", -1)
         nt.putNumber("y", -1)
+        nt.putNumber("z", -1)
+
+        nt.putNumber("tag", -1)
 
         # loop over the AprilTag detection results
         for r in results:
