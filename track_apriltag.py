@@ -2,6 +2,7 @@ import numpy as np
 import cv2
 from pupil_apriltags import Detector
 from time import time
+from scipy.spatial.transform import Rotation as R
 
 from cscore import CameraServer, VideoMode
 from networktables import NetworkTablesInstance
@@ -108,9 +109,6 @@ while True:
                 x_centered = cX - frame_width / 2
                 y_centered = -1 * (cY - frame_height / 2)
 
-                nt.putNumber("x", x_centered)
-                nt.putNumber("y", y_centered)
-
                 cv2.putText(inputImage, f"Center X coord: {x_centered}", (ptB[0] + 10, ptB[1] - 20),
                             cv2.FONT_HERSHEY_SIMPLEX, .5, (0, 255, 0), 2)
 
@@ -125,6 +123,18 @@ while True:
                 poseRotation = r.pose_R
                 poseTranslation = r.pose_t
                 poseTranslation = [i*31.9541559133 for i in poseTranslation]
+
+                poseRotationOutput = R.from_matrix(poseRotation).as_euler('zxy', degrees=True)
+                nt.putNumber("rotZ", poseRotationOutput[0])
+                nt.putNumber("rotX", poseRotationOutput[1])
+                nt.putNumber("rotY", poseRotationOutput[2])
+
+                nt.putNumber("x", poseTranslation[0][0])
+                nt.putNumber("y", poseTranslation[1][0])
+                nt.putNumber("z", poseTranslation[2][0])
+
+                tagID = int(r.tag_id[-1])
+                nt.putNumber("tag", tagID)
 
                 if debug_mode:
                     print(f"[DATA] Detection rotation matrix:\n{poseRotation}")
